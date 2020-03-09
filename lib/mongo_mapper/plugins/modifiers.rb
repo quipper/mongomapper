@@ -82,11 +82,17 @@ module MongoMapper
 
         def modifier_update(modifier, args)
           criteria, updates, options = criteria_and_keys_from_args(args)
+          modifier, updates = deprecate_push_all(modifier, updates)
           if options
             collection.update_many(criteria, {modifier => updates}, options)
           else
             collection.update_many(criteria, {modifier => updates})
           end
+        end
+
+        def deprecate_push_all(modifier, updates)
+          return [modifier, updates] unless modifier == '$pushAll'
+          ['$push', updates.inject({}) { |accu, (k, v)| accu.tap { |h| h[k] = { '$each' => v } } } ]
         end
 
         def criteria_and_keys_from_args(args)
