@@ -8,14 +8,19 @@ rvm:
   - 2.5.7
   - 2.6.5
   - 2.7.0
+
+env:
+  matrix:
+    - MONGODB=3.4
+    - MONGODB=3.6
+
+before_script:
+  - docker run --rm -p 27017:27017 mongodb:${MONGODB}
+
 notifications:
   email: false
 bundler_args: --without development
-services: mongodb
 matrix:
-  include:
-    - rvm: 2.6.5
-      gemfile: Gemfile
   exclude:
     - rvm: 2.6.5
       gemfile: gemfiles/rails4_2.gemfile
