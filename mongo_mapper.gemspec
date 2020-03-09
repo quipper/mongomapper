@@ -17,5 +17,5 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'activemodel',   "< 6.1.0"
   s.add_dependency 'activesupport', '< 6.1.0'
-  s.add_dependency 'mongo',         '~> 2.9.0'
+  s.add_dependency 'mongo',         '~> 2.0'
 end
