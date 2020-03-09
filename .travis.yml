@@ -15,7 +15,8 @@ env:
     - MONGODB=3.6
 
 before_script:
-  - docker run --rm -p 27017:27017 mongodb:${MONGODB}
+  - docker run -d -p 27017:27017 mongo:${MONGODB}
+  - docker ps -a
 
 notifications:
   email: false
