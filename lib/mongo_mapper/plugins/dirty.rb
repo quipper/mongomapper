@@ -27,7 +27,7 @@ module MongoMapper
         (block_given? ? yield : true).tap do |result|
           unless result == false #failed validation; nil is OK.
             @previously_changed = previous
-            if ::Rails::VERSION::MAJOR > 4
+            if ::ActiveModel::VERSION::MAJOR > 4
               changes_applied
             else
               changed_attributes.clear
@@ -58,7 +58,7 @@ module MongoMapper
       end
 
       def _attribute_will_change!(key, value)
-        if ::Rails::VERSION::MAJOR > 4
+        if ::ActiveModel::VERSION::MAJOR > 4
           attribute_will_change!(key) if attribute_should_change?(key, value)
         else
           attribute_will_change!(key) unless attribute_changed?(key)
@@ -66,7 +66,7 @@ module MongoMapper
       end
 
       def delete_changed_attributes(key)
-        if ::Rails::VERSION::MAJOR > 4
+        if ::ActiveModel::VERSION::MAJOR > 4
           return clear_attribute_changes([key])
         end
         changed_attributes.delete(key)
