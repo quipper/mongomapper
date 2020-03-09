@@ -28,7 +28,9 @@ module MongoMapper
           unless result == false #failed validation; nil is OK.
             @previously_changed = previous
             changed_attributes.clear
-            changes_applied
+            if ::Rails.version[0...3] == '5.2' || ::Rails::VERSION::MAJOR == 6
+              changes_applied
+            end
           end
         end
       end
@@ -47,15 +49,25 @@ module MongoMapper
         if !keys.key?(key)
           super
         else
-          attribute_will_change!(key) if attribute_should_change?(key, value)
+          _attribute_will_change!(key, value)
           super.tap do
             delete_changed_attributes(key) unless attribute_value_changed?(key)
           end
         end
       end
 
+      def _attribute_will_change!(key, value)
+        if ::Rails::VERSION::MAJOR < 6 && ::Rails.version[0...3] != '5.2'
+          attribute_will_change!(key) unless attribute_changed?(key)
+        else
+          attribute_will_change!(key) if attribute_should_change?(key, value)
+        end
+      end
+
       def delete_changed_attributes(key)
-        clear_attribute_changes([key])
+        if ::Rails.version[0...3] == '5.2' || ::Rails::VERSION::MAJOR == 6
+          clear_attribute_changes([key])
+        end
         changed_attributes.delete(key)
       end
 

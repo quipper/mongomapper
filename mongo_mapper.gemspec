@@ -16,7 +16,6 @@ Gem::Specification.new do |s|
   s.files              = Dir.glob("{bin,examples,lib,spec}/**/*") + %w[LICENSE UPGRADES README.rdoc]
 
   s.add_dependency 'activemodel',   "< 6.1.0"
-  s.add_dependency 'activemodel-serializers-xml', '> 1.0'
   s.add_dependency 'activesupport', '< 6.1.0'
   s.add_dependency 'mongo',         '~> 2.0'
 end

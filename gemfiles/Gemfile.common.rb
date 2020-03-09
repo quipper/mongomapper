@@ -39,8 +39,6 @@ group :test do
   end
 
   if RUBY_VERSION >= '2.3'
-    platforms :mri_23 do
-      gem 'byebug'
-    end
+    gem 'byebug'
   end
 end

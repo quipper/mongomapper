@@ -1,4 +1,6 @@
-require 'activemodel-serializers-xml'
+unless defined?(::ActiveModel::Serializers::Xml)
+  require 'activemodel-serializers-xml'
+end
 
 # encoding: UTF-8
 module MongoMapper
