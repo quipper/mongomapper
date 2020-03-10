@@ -86,7 +86,7 @@ module IdentityMapSpec
 
       context "with a successful request" do
         it "should clear the identity map" do
-          expect(MongoMapper::Plugins::IdentityMap).to receive(:clear).twice
+          expect(MongoMapper::Plugins::IdentityMap).to receive(:clear).at_least(:twice)
           get '/'
         end
       end

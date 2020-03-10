@@ -6,7 +6,7 @@ gem 'multi_json',  '~> 1.2'
 gem 'plucky', git: "https://github.com/fcheung/plucky.git", branch: 'mongo-2.x'
 
 if RUBY_PLATFORM != "java"
-  gem 'coveralls', :require => false
+  gem 'coveralls', '~> 0.8.0', :require => false
   gem 'simplecov', :require => false
 end
 gem 'rest-client', '1.6.7'
@@ -39,8 +39,6 @@ group :test do
   end
 
   if RUBY_VERSION >= '2.3'
-    platforms :mri_23 do
-      gem 'byebug'
-    end
+    gem 'byebug'
   end
 end
