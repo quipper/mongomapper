@@ -50,18 +50,10 @@ module MongoMapper
         if !keys.key?(key)
           super
         else
-          _attribute_will_change!(key, value)
+          attribute_will_change!(key) unless attribute_changed?(key)
           super.tap do
             delete_changed_attributes(key) unless attribute_value_changed?(key)
           end
-        end
-      end
-
-      def _attribute_will_change!(key, value)
-        if ::ActiveModel::VERSION::MAJOR > 4
-          attribute_will_change!(key) if attribute_should_change?(key, value)
-        else
-          attribute_will_change!(key) unless attribute_changed?(key)
         end
       end
 
@@ -70,13 +62,6 @@ module MongoMapper
           return clear_attribute_changes([key])
         end
         changed_attributes.delete(key)
-      end
-
-      def attribute_should_change?(key, value)
-        key_val = read_key(key)
-        value != key_val &&
-          (key_val.blank? ? value.present? : true) &&
-          (key_val.is_a?(BSON::ObjectId) ? key_val.to_s != value.to_s : true)
       end
 
       def attribute_value_changed?(key_name)
