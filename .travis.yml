@@ -18,7 +18,10 @@ env:
 
 before_script:
   - docker run -d -p 27017:27017 mongo:${MONGODB}
-  - docker ps -a
+  - |
+    curl -LO https://github.com/ufoscout/docker-compose-wait/releases/download/2.7.3/wait
+    chmod +x wait
+    WAIT_HOSTS="localhost:27017" ./wait
 
 notifications:
   email: false
