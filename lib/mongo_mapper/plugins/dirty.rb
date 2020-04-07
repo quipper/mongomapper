@@ -27,11 +27,7 @@ module MongoMapper
         (block_given? ? yield : true).tap do |result|
           unless result == false #failed validation; nil is OK.
             @previously_changed = previous
-            if ::ActiveModel::VERSION::MAJOR > 4
-              changes_applied
-            else
-              changed_attributes.clear
-            end
+            changes_applied
           end
         end
       end
