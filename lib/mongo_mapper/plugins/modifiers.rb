@@ -82,11 +82,30 @@ module MongoMapper
 
         def modifier_update(modifier, args)
           criteria, updates, options = criteria_and_keys_from_args(args)
+          modifier, updates = deprecate_push_all(modifier, updates)
           if options
             collection.update_many(criteria, {modifier => updates}, options)
           else
             collection.update_many(criteria, {modifier => updates})
           end
+        end
+
+        # from: https://docs.mongodb.com/manual/release-notes/3.6-compatibility/#remove-pushall-update-operator
+        #
+        # Remove $pushAll Update Operator
+        #
+        # MongoDB 3.6 removes the deprecated $pushAll operator. The operator has been deprecated since 2.4.
+        # Instead of $pushAll, use the $push operator with the $each modifier. For example:
+        #
+        # ```
+        # db.students.update(
+        #   { name: "joe" },
+        #   { $push: { scores: { $each: [ 90, 92, 85 ] } } }
+        # )
+        # ```
+        def deprecate_push_all(modifier, updates)
+          return [modifier, updates] unless modifier == '$pushAll'
+          ['$push', updates.inject({}) { |accu, (k, v)| accu.tap { |h| h[k] = { '$each' => v } } } ]
         end
 
         def criteria_and_keys_from_args(args)

@@ -10,7 +10,7 @@ module MongoMapper
         # never register initial id assignment as a change
         # Chaining super into tap breaks implicit block passing in Ruby 1.8
         doc = super
-        doc.tap { changed_attributes.delete('_id') }
+        doc.tap { clear_attribute_changes(['_id']) }
       end
 
       def save(*)
@@ -27,7 +27,7 @@ module MongoMapper
         (block_given? ? yield : true).tap do |result|
           unless result == false #failed validation; nil is OK.
             @previously_changed = previous
-            changed_attributes.clear
+            changes_applied
           end
         end
       end
@@ -48,7 +48,7 @@ module MongoMapper
         else
           attribute_will_change!(key) unless attribute_changed?(key)
           super.tap do
-            changed_attributes.delete(key) unless attribute_value_changed?(key)
+            clear_attribute_changes([key]) unless attribute_value_changed?(key)
           end
         end
       end
