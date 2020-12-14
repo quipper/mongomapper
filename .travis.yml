@@ -4,6 +4,7 @@ gemfile:
   - gemfiles/rails5_0.gemfile
   - gemfiles/rails5_1.gemfile
   - gemfiles/rails5_2.gemfile
+  - gemfiles/rails6_0.gemfile
   - Gemfile
 rvm:
   - 2.5.7

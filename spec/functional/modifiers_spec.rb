@@ -173,10 +173,10 @@ module Modifiers
           }.to_not raise_error
         end
 
-        it "should not typecast keys that are not defined in document" do
+        it "should not typecast keys that are not defined in document and have no default typecasing" do
           expect {
             page_class.set(page.id, :colors => ['red', 'green'].to_set)
-          }.to raise_error(NoMethodError)
+          }.to raise_error(BSON::Error::UnserializableClass, /does not define its BSON serialized type/)
         end
 
         it "should set keys that are not defined in document" do
